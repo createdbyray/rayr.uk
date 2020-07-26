@@ -11,14 +11,19 @@
 
   let currentChannel = 0;
 
-  let pageWrapper = document.querySelector('.js-page-wrapper');
-  let channelBtn = pageWrapper.querySelector('.js-channel-btn');
-  let channelNumber = channelBtn.querySelector('.js-channel');
+  const animationContainer = document.querySelector('.js-tv-animation');
+  const channelBtn = animationContainer.querySelector('.js-channel-btn');
+  const channelNumber = channelBtn.querySelector('.js-channel-number');
 
-  function removeWrapperAnimationOnEnd() {
-    pageWrapper.addEventListener(
+  function animateContainer(animation = null) {
+    if (animation) {
+      animationContainer.setAttribute('animation', 'switch-channel');
+    }
+
+    // remove the attribute after the animation ends
+    animationContainer.addEventListener(
       'animationend',
-      (e) => pageWrapper.removeAttribute('animation'),
+      (e) => animationContainer.removeAttribute('animation'),
       { once: true },
     );
   }
@@ -32,30 +37,23 @@
   }
 
   onMount(() => {
-    removeWrapperAnimationOnEnd();
-    channelBtn.addEventListener('click', cycleChannel);
+    // remvoes the initial animation attribute once it's done
+    animateContainer();
 
-    return () => {
-      channelBtn.removeEventListener('click', cycleChannel);
-    };
+    channelBtn.addEventListener('click', cycleChannel);
   });
 
   $: doesChannelExist = AVAILABLE_CHANNELS.has(currentChannel);
-  $: formattedChannel = currentChannel.toString().padStart(2, '0');
 
   $: {
     if (currentChannel != null) {
-      channelNumber.textContent = formattedChannel;
-
-      const animation = pageWrapper.getAttribute('animation');
-      // todo: should we listen to chrome complaining about playing noise without user interaction?
-      // if (animation !== 'turn-on') {
+      channelNumber.textContent = currentChannel.toString().padStart(2, '0');
       window.requestAnimationFrame(noise);
-      // }
+
+      const animation = animationContainer.getAttribute('animation');
 
       if (!animation) {
-        pageWrapper.setAttribute('animation', 'switch-channel');
-        removeWrapperAnimationOnEnd();
+        animateContainer('switch-channel');
       }
     } else {
       channelNumber.textContent = '00';
@@ -65,10 +63,12 @@
   function handleKeyup(e) {
     let channel = parseInt(e.key, 10);
 
+    // ignore non-number keys
     if (Number.isNaN(channel)) {
       return;
     }
 
+    // toggle between a X channel and channel 0
     if (channel === currentChannel) {
       currentChannel = 0;
     } else {
