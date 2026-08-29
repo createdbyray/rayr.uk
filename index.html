@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a0a0c">
+    <meta name="description" content="RayR.uk — a portfolio piece. Seven imagined volumes, rendered in one page.">
+    <title>rayr.uk</title>
+    <link rel="canonical" href="https://rayr.uk/">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <!-- GSAP for Masked Reveal -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .font-manrope { font-family: 'Manrope', sans-serif; }
+
+        body {
+            background: radial-gradient(120% 100% at 50% 30%, #2a1113 0%, #1a0a0c 55%, #0f0607 100%);
+        }
+
+        .next-button {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 999px;
+            background: #b02330;
+            color: #fff0e8;
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            overflow: hidden;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 0 0 rgba(176, 35, 48, 0);
+        }
+        .next-button:hover {
+            background: #961c27;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px -8px rgba(176, 35, 48, 0.6);
+        }
+        .next-button:active {
+            transform: translateY(0);
+        }
+        .next-button iconify-icon {
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+        .next-button:hover iconify-icon {
+            transform: translateX(3px);
+        }
+        .next-button::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 999px;
+            padding: 1px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.35), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="text-[#e8dcc4] min-h-screen selection:bg-[#b02330]/30 antialiased font-manrope">
+
+    <!-- Header -->
+    <header class="w-full flex justify-between items-center px-6 md:px-12 py-6">
+        <div class="text-xs tracking-[0.28em] uppercase text-[#b99a8f] font-medium">
+            Est. 2026 · England
+        </div>
+    </header>
+
+    <!-- Hero Section with Canvas Animation & Aura Background -->
+    <section class="relative w-full h-[65vh] min-h-[500px] flex items-center justify-center overflow-hidden border-b border-white/5 pt-16">
+        <!-- WebGL/Canvas Background -->
+        <canvas id="particle-canvas" class="absolute inset-0 z-0 w-full h-full opacity-80"></canvas>
+
+        <!-- Hero Content -->
+        <div class="relative z-10 text-center mx-4 max-w-4xl w-full flex flex-col items-center">
+            <h1 class="reveal-text text-5xl md:text-7xl lg:text-8xl text-white tracking-tight leading-tight mb-6 font-light">
+                Three Pages,<br>One Purpose
+            </h1>
+            <p class="reveal-text text-lg md:text-xl lg:text-2xl text-[#b99a8f] max-w-2xl mx-auto leading-relaxed font-light">
+                All my links.
+            </p>
+            <a href="1.html" class="next-button">
+                Next
+                <iconify-icon icon="solar:arrow-right-linear" stroke-width="2"></iconify-icon>
+            </a>
+        </div>
+    </section>
+
+    <!-- Content Grid Section -->
+    <section class="max-w-7xl mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- Card 1 -->
+            <div class="relative bg-[#1a0e0f] border border-white/5 rounded-xl p-6 h-full flex flex-col group">
+                <div class="mb-4">
+                    <h3 class="reveal-text text-base text-white tracking-tight flex items-baseline gap-2 font-medium">
+                        Page one
+                    </h3>
+                    <p class="text-sm text-[#b99a8f] mt-2 leading-relaxed font-normal">
+                        You are here.
+                    </p>
+                </div>
+                <div class="mt-auto pt-6 flex items-end gap-3 h-32 opacity-80 group-hover:opacity-100 transition-opacity">
+                    <div class="chart-col flex flex-col-reverse gap-[2px] w-full max-w-[40px]">
+                        <div class="chart-dot w-full h-1 bg-[#b99a8f] rounded-sm transition-opacity duration-300" style="opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 bg-[#b99a8f] rounded-sm transition-opacity duration-300" style="opacity: 0.15;"></div>
+                        <div class="chart-dot w-full h-1 bg-[#b99a8f] rounded-sm transition-opacity duration-300" style="opacity: 0.15;"></div>
+                        <div class="chart-dot w-full h-1 bg-[#b99a8f] rounded-sm transition-opacity duration-300" style="opacity: 0.15;"></div>
+                        <div class="chart-dot w-full h-1 bg-[#b99a8f] rounded-sm transition-opacity duration-300" style="opacity: 0.15;"></div>
+                        <div class="chart-dot w-full h-1 bg-[#b99a8f] rounded-sm transition-opacity duration-300" style="opacity: 0.15;"></div>
+                    </div>
+                    <div class="chart-col flex flex-col-reverse gap-[2px] w-full max-w-[40px]">
+                        <div class="chart-dot w-full h-1 bg-[#b99a8f] rounded-sm transition-opacity duration-300" style="opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 bg-[#b99a8f] rounded-sm transition-opacity duration-300" style="opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 bg-[#b99a8f] rounded-sm transition-opacity duration-300" style="opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 bg-[#b99a8f] rounded-sm transition-opacity duration-300" style="opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 bg-[#b99a8f] rounded-sm transition-opacity duration-300" style="opacity: 0.15;"></div>
+                        <div class="chart-dot w-full h-1 bg-[#b99a8f] rounded-sm transition-opacity duration-300" style="opacity: 0.15;"></div>
+                    </div>
+                    <div class="chart-col flex flex-col-reverse gap-[2px] w-full max-w-[40px]">
+                        <div class="chart-dot w-full h-1 bg-[#b99a8f] rounded-sm transition-opacity duration-300" style="opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 bg-[#b99a8f] rounded-sm transition-opacity duration-300" style="opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 bg-[#b99a8f] rounded-sm transition-opacity duration-300" style="opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 bg-[#b99a8f] rounded-sm transition-opacity duration-300" style="opacity: 0.15;"></div>
+                        <div class="chart-dot w-full h-1 bg-[#b99a8f] rounded-sm transition-opacity duration-300" style="opacity: 0.15;"></div>
+                        <div class="chart-dot w-full h-1 bg-[#b99a8f] rounded-sm transition-opacity duration-300" style="opacity: 0.15;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="relative bg-[#1a0e0f] border border-white/5 rounded-xl p-6 h-full flex flex-col group">
+                <div class="mb-4">
+                    <h3 class="reveal-text text-base text-white tracking-tight flex items-baseline gap-2 font-medium">
+                        Page 2
+                    </h3>
+                    <p class="text-sm text-[#b99a8f] mt-2 leading-relaxed font-normal">
+                        The next page.
+                    </p>
+                </div>
+                <div class="mt-auto pt-6 flex items-end gap-3 h-32 opacity-80 group-hover:opacity-100 transition-opacity">
+                    <div class="chart-col flex flex-col-reverse gap-[2px] w-full max-w-[40px]">
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#e0645a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#e0645a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#e0645a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#e0645a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#e0645a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#e0645a; opacity: 1;"></div>
+                    </div>
+                    <div class="chart-col flex flex-col-reverse gap-[2px] w-full max-w-[40px]">
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#e0645a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#e0645a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#e0645a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#e0645a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#e0645a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#e0645a; opacity: 1;"></div>
+                    </div>
+                    <div class="chart-col flex flex-col-reverse gap-[2px] w-full max-w-[40px]">
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#e0645a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#e0645a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#e0645a; opacity: 0.15;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#e0645a; opacity: 0.15;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#e0645a; opacity: 0.15;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#e0645a; opacity: 0.15;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="relative bg-[#1a0e0f] border border-white/5 rounded-xl p-6 h-full flex flex-col group">
+                <div class="mb-4">
+                    <h3 class="reveal-text text-base text-white tracking-tight flex items-baseline gap-2 font-medium">
+                        Page 3
+                    </h3>
+                    <p class="text-sm text-[#b99a8f] mt-2 leading-relaxed font-normal">
+                        The page after that.
+                    </p>
+                </div>
+                <div class="mt-auto pt-6 flex items-end gap-3 h-32 opacity-80 group-hover:opacity-100 transition-opacity">
+                    <div class="chart-col flex flex-col-reverse gap-[2px] w-full max-w-[40px]">
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#d8a26a; opacity: 0.15;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#d8a26a; opacity: 0.15;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#d8a26a; opacity: 0.15;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#d8a26a; opacity: 0.15;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#d8a26a; opacity: 0.15;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#d8a26a; opacity: 0.15;"></div>
+                    </div>
+                    <div class="chart-col flex flex-col-reverse gap-[2px] w-full max-w-[40px]">
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#d8a26a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#d8a26a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#d8a26a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#d8a26a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#d8a26a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#d8a26a; opacity: 1;"></div>
+                    </div>
+                    <div class="chart-col flex flex-col-reverse gap-[2px] w-full max-w-[40px]">
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#d8a26a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#d8a26a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#d8a26a; opacity: 1;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#d8a26a; opacity: 0.15;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#d8a26a; opacity: 0.15;"></div>
+                        <div class="chart-dot w-full h-1 rounded-sm transition-opacity duration-300" style="background:#d8a26a; opacity: 0.15;"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Links row -->
+        <!-- <div class="mt-12 flex flex-wrap gap-4 justify-center text-sm text-[#b99a8f]">
+            <a href="https://rayr.uk" class="hover:text-white transition-colors underline underline-offset-4">rayr.uk</a>
+        </div> -->
+    </section>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Text Masked Reveal with GSAP Split Logic
+            document.querySelectorAll('.reveal-text').forEach(el => {
+                const html = el.innerHTML;
+                const newHtml = html.split(/(<br\s*\/?>|\s+)/).map(part => {
+                    if (part.match(/<br/i)) return part;
+                    if (part.trim() === '') return part;
+                    return `<span style="display:inline-block; overflow:hidden; vertical-align:top;"><span class="reveal-word" style="display:inline-block; transform:translateY(100%); opacity:0;">${part}</span></span>`;
+                }).join('');
+                el.innerHTML = newHtml;
+            });
+
+            gsap.registerPlugin(ScrollTrigger);
+            gsap.utils.toArray('.reveal-text').forEach(el => {
+                gsap.to(el.querySelectorAll('.reveal-word'), {
+                    y: '0%',
+                    opacity: 1,
+                    duration: 0.8,
+                    stagger: 0.04,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 90%'
+                    }
+                });
+            });
+
+            // Reveal the Next button after the text finishes animating in
+            gsap.set('.next-button', { opacity: 0, y: 12 });
+            gsap.to('.next-button', {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                delay: 0.9,
+                ease: 'power2.out'
+            });
+
+            // Chart Animation Logic
+            setInterval(() => {
+                document.querySelectorAll('.chart-col').forEach(col => {
+                    const dots = col.querySelectorAll('.chart-dot');
+                    const activeCount = Math.floor(Math.random() * (dots.length + 1));
+                    dots.forEach((dot, index) => {
+                        dot.style.opacity = index < activeCount ? '1' : '0.15';
+                    });
+                });
+            }, 600);
+
+            // Canvas Background Logic — crimson/ivory dot-field to match the RayR.uk red palette
+            const canvas = document.getElementById('particle-canvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                let width, height;
+
+                const spacing = 16;
+                const dotRadius = 1.5;
+                let time = 0;
+
+                function resize() {
+                    width = canvas.width = canvas.offsetWidth;
+                    height = canvas.height = canvas.offsetHeight;
+                }
+
+                window.addEventListener('resize', resize);
+                resize();
+
+                function draw() {
+                    ctx.clearRect(0, 0, width, height);
+
+                    const cols = Math.floor(width / spacing);
+                    const rows = Math.floor(height / spacing);
+
+                    const offsetX = (width - cols * spacing) / 2;
+                    const offsetY = (height - rows * spacing) / 2;
+
+                    for (let i = 0; i <= cols; i++) {
+                        for (let j = 0; j <= rows; j++) {
+                            const x = offsetX + i * spacing;
+                            const y = offsetY + j * spacing;
+
+                            const nx = i * 0.1;
+                            const ny = j * 0.1;
+
+                            const wave1 = Math.sin(nx + time * 0.5) * Math.cos(ny - time * 0.3);
+                            const wave2 = Math.sin(nx * 0.5 - ny * 0.5 + time * 0.8);
+                            const value = wave1 + wave2;
+
+                            if (value > 0.1) {
+                                ctx.beginPath();
+                                ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
+
+                                const highlightCheck = Math.sin(i * 12.34) * Math.cos(j * 56.78);
+
+                                if (highlightCheck > 0.98) {
+                                    ctx.fillStyle = '#b02330'; // Crimson highlight
+                                } else if (highlightCheck < -0.98) {
+                                    ctx.fillStyle = '#e8dcc4'; // Ivory highlight
+                                } else {
+                                    const alpha = Math.min(0.6, (value - 0.1) * 0.8);
+                                    ctx.fillStyle = `rgba(185, 154, 143, ${alpha})`;
+                                }
+
+                                ctx.fill();
+                            }
+                        }
+                    }
+
+                    time += 0.02;
+                    requestAnimationFrame(draw);
+                }
+
+                draw();
+            }
+        });
+    </script>
+
+</body>
+</html>
