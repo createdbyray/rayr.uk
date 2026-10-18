@@ -2,334 +2,523 @@
 <html lang="en">
 
 <head>
-    <!-- Meta tags added due to entries.js deprecation on July 8th, 2025 -->
+    <!-- Time waits for no one. -->
     <meta name="description" content="rayr.uk">
     <meta name="author" content="rayr.uk">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Clock</title>
     <style>
+        :root {
+            --green: #8bc926;
+            --green-bright: #b6f03c;
+            --green-deep: #4f8a0a;
+            --ink: #3a3f3a;
+            --silver-1: #fbfcfb;
+            --silver-2: #dde2dd;
+            --silver-3: #b3bab3;
+            /* dial size: fits both width and height, leaves room for the readout */
+            --size: min(92vw, calc(100vh - 150px), 580px);
+            --size: min(92vw, calc(100dvh - 150px), 580px);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html,
+        body {
+            height: 100%;
+        }
+
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            gap: clamp(14px, 3vmin, 28px);
             min-height: 100vh;
-            background: #091921;
+            min-height: 100dvh;
+            padding: 16px;
+            overflow: hidden;
+            font-family: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background:
+                radial-gradient(ellipse 80% 55% at 50% 112%, rgba(139, 201, 38, 0.45), transparent 70%),
+                radial-gradient(ellipse 70% 50% at 50% -10%, rgba(255, 255, 255, 0.95), transparent 70%),
+                linear-gradient(180deg, #eef1ee 0%, #d5dbd5 100%);
         }
 
-        body.light {
-            background: #d1dae3;
+        /* ---------- Ribbons (dashboard waves) ---------- */
+        .ribbons {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeIn 2.2s ease-out 0.3s forwards;
         }
 
-        .clock {
-            width: 350px;
-            height: 350px;
+        .ribbons svg {
+            position: absolute;
+            left: 0;
+            width: 200%;
+            height: 60%;
+            will-change: transform;
+            animation: drift linear infinite;
+        }
+
+        .ribbons .r1 {
+            bottom: -6%;
+            animation-duration: 38s;
+            opacity: 0.9;
+        }
+
+        .ribbons .r2 {
+            bottom: 8%;
+            height: 50%;
+            animation-duration: 54s;
+            animation-direction: reverse;
+            opacity: 0.65;
+        }
+
+        .ribbons .r3 {
+            bottom: 18%;
+            height: 44%;
+            animation-duration: 72s;
+            opacity: 0.4;
+        }
+
+        .ribbons path.fill {
+            fill: url(#ribbonFill);
+        }
+
+        .ribbons path.line {
+            fill: none;
+            stroke: var(--green-bright);
+            stroke-width: 3;
+            stroke-linecap: round;
+            filter: drop-shadow(0 0 6px rgba(160, 230, 40, 0.8));
+        }
+
+        @keyframes drift {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* ---------- Clock ---------- */
+        .stage {
+            position: relative;
+            z-index: 1;
+            width: var(--size);
+            height: var(--size);
+            animation: boot 1.2s cubic-bezier(.2, .8, .2, 1) both;
+        }
+
+        .stage svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            overflow: visible;
+            filter: drop-shadow(0 18px 26px rgba(40, 55, 40, 0.35));
+        }
+
+        @keyframes boot {
+            from {
+                opacity: 0;
+                transform: scale(0.82);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Ring of light: four quadrants light up in sequence, then spin + pulse */
+        .ring-spin {
+            transform-origin: 0 0;
+            animation: spin 28s linear 2s infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .quad {
+            opacity: 0;
+            animation: quadOn 0.5s ease-out forwards, pulse 3.2s ease-in-out 2.2s infinite;
+        }
+
+        .quad:nth-child(1) {
+            animation-delay: 0.3s, 2.2s;
+        }
+
+        .quad:nth-child(2) {
+            animation-delay: 0.55s, 2.4s;
+        }
+
+        .quad:nth-child(3) {
+            animation-delay: 0.8s, 2.6s;
+        }
+
+        .quad:nth-child(4) {
+            animation-delay: 1.05s, 2.8s;
+        }
+
+        @keyframes quadOn {
+            0% {
+                opacity: 0;
+            }
+
+            40% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.95;
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.95;
+            }
+
+            50% {
+                opacity: 0.55;
+            }
+        }
+
+        .orb-glow {
+            transform-origin: 0 0;
+            animation: orb 2.6s ease-in-out infinite;
+        }
+
+        @keyframes orb {
+
+            0%,
+            100% {
+                opacity: 0.55;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.35);
+            }
+        }
+
+        /* ---------- Digital readout ---------- */
+        .readout {
+            position: relative;
+            z-index: 1;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            background: #091921;
-            border: 20px solid #091921;
-            border-radius: 50%;
-            box-shadow: -8px -8px 15px rgba(255, 255, 255, 0.05),
-                20px 20px 20px rgba(0, 0, 0, 0.3),
-                inset -8px -8px 15px rgba(255, 255, 255, 0.05),
-                inset 20px 20px 20px rgba(0, 0, 0, 0.3);
+            gap: 6px;
+            animation: rise 1s cubic-bezier(.2, .8, .2, 1) 0.6s both;
         }
 
-        body.light .clock {
-            background: #d1dae3;
-            border: 20px solid #cad3dc;
-            box-shadow: -8px -8px 15px rgba(255, 255, 255, 0.5),
-                10px 10px 10px rgba(0, 0, 0, 0.3),
-                inset -8px -8px 15px rgba(255, 255, 255, 0.5),
-                inset 10px 10px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .clock::before {
-            content: '';
-            position: absolute;
-            height: 15px;
-            width: 15px;
-            background: #fff;
-            border-radius: 50%;
-            z-index: 100000;
-        }
-
-        body.light .clock::before {
-            background: #008eff;
-        }
-
-        .indicators div {
-            position: absolute;
-            width: 2px;
-            height: 15px;
-            background: #404040;
-        }
-
-        .indicators div:nth-child(1) {
-            transform: rotate(30deg) translateY(-130px) translateX(-3px);
-        }
-
-        .indicators div:nth-child(2) {
-            transform: rotate(60deg) translateY(-130px) translateX(-5px);
-        }
-
-        .indicators div:nth-child(3) {
-            transform: rotate(120deg) translateY(-130px) translateX(-5px);
-        }
-
-        .indicators div:nth-child(4) {
-            transform: rotate(150deg) translateY(-130px) translateX(-2px);
-        }
-
-        .indicators div:nth-child(5) {
-            transform: rotate(210deg) translateY(-130px) translateX(4px);
-        }
-
-        .indicators div:nth-child(6) {
-            transform: rotate(240deg) translateY(-130px) translateX(6px);
-        }
-
-        .indicators div:nth-child(7) {
-            transform: rotate(300deg) translateY(-130px) translateX(5px);
-        }
-
-        .indicators div:nth-child(8) {
-            transform: rotate(330deg) translateY(-130px) translateX(2px);
-        }
-
-        body.light .indicators div {
-            background: #808080;
-        }
-
-        .nums {
-            position: absolute;
-            font-size: 30px;
-            font-weight: bold;
-            color: #808080;
-        }
-
-        #three {
-            position: absolute;
-            left: 120px;
-            top: -15px;
-        }
-
-        #six {
-            position: absolute;
-            top: 110px;
-            left: -8px;
-        }
-
-        #nine {
-            position: absolute;
-            right: 120px;
-            top: -15px;
-        }
-
-        #twelve {
-            position: absolute;
-            bottom: 110px;
-            left: -15px;
-        }
-
-        .clock .hour,
-        .clock .min,
-        .clock .sec {
-            position: absolute;
-            z-index: 10;
-        }
-
-        .hour,
-        .hr {
-            height: 160px;
-            width: 160px;
-        }
-
-        .min,
-        .mn {
-            height: 190px;
-            width: 190px;
-        }
-
-        .sec,
-        .sc {
-            height: 230px;
-            width: 230px;
-        }
-
-        .hr,
-        .mn,
-        .sc {
+        .pill {
             display: flex;
-            justify-content: center;
-            position: absolute;
+            align-items: center;
+            gap: clamp(10px, 2vmin, 16px);
+            padding: clamp(8px, 1.6vmin, 12px) clamp(18px, 4vmin, 30px);
+            border-radius: 999px;
+            background: linear-gradient(180deg, #ffffff 0%, #e9edE9 48%, #d3d9d3 52%, #e6eae6 100%);
+            border: 1px solid #aeb5ae;
+            box-shadow:
+                inset 0 1px 0 #fff,
+                0 6px 14px rgba(40, 55, 40, 0.25),
+                0 0 0 3px rgba(139, 201, 38, 0.25);
+        }
+
+        .dot {
+            width: clamp(10px, 2vmin, 14px);
+            height: clamp(10px, 2vmin, 14px);
             border-radius: 50%;
-        }
-
-        .hr::before {
-            content: '';
-            position: absolute;
-            width: 8px;
-            height: 80px;
-            background: #ff105e;
-            z-index: 10;
-            border-radius: 6px 6px 0 0;
-        }
-
-        .mn::before {
-            content: '';
-            position: absolute;
-            width: 4px;
-            height: 90px;
-            background: #ffffff;
-            z-index: 11;
-            border-radius: 6px 6px 0 0;
-        }
-
-        body.light .mn::before {
-            background: #091921;
-        }
-
-        .sc::before {
-            content: '';
-            position: absolute;
-            width: 2px;
-            height: 150px;
-            background: #008eff;
-            z-index: 12;
-            border-radius: 6px 6px 0 0;
+            background: radial-gradient(circle at 35% 30%, #eaffb8, var(--green) 55%, var(--green-deep));
+            box-shadow: 0 0 10px 2px rgba(139, 201, 38, 0.8);
+            animation: orb 2.6s ease-in-out infinite;
         }
 
         .time {
-            height: 20px;
-            position: absolute;
-            margin-top: 60%;
-            padding: 0 5px;
-            border: 1px solid #091921;
-            background: #091921;
-            border-radius: 5px;
-            color: #808080;
-            font-weight: bold;
-            box-shadow: 5px 5px 10px rgba(255, 255, 255, 0.1), -5px -5px 10px rgba(255, 255, 255, 0.1);
-        }
-
-        body.light .time {
-            color: #606060;
-            border: 1px solid #CAD3E3;
-            background: #CAD3E3;
-            box-shadow: 5px 5px 10px rgba(255, 255, 255, 0.5), -5px -5px 10px rgba(255, 255, 255, 0.5);
-        }
-
-        .toggleClass {
-            position: absolute;
-            top: 30px;
-            right: 150px;
-            width: 20px;
-            height: 20px;
-            font-size: 18px;
-            border-radius: 50%;
-            background: #d1dae3;
-            color: #d1dae3;
-            font-family: monospace;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-        }
-
-        .toggleClass::before {
-            position: absolute;
-            left: 25px;
-            content: 'Light Mode';
+            font-size: clamp(20px, 5vmin, 34px);
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            color: var(--ink);
+            font-variant-numeric: tabular-nums;
+            text-shadow: 0 1px 0 #fff;
             white-space: nowrap;
         }
 
-        body.light .toggleClass {
-            background: #091921;
-            color: #091921;
+        .time .sep {
+            color: var(--green-deep);
+            animation: blink 1s steps(1) infinite;
         }
 
-        body.light .toggleClass::before {
-            content: 'Dark Mode';
+        @keyframes blink {
+            50% {
+                opacity: 0.25;
+            }
+        }
+
+        .date {
+            font-size: clamp(11px, 2.4vmin, 15px);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #6b736b;
+            text-shadow: 0 1px 0 #fff;
+        }
+
+        @keyframes rise {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                animation-delay: 0s !important;
+            }
         }
     </style>
 </head>
 
-<body class="light">
-    <div class="clock">
-        <div class="hour">
-            <div class="hr" id="hr"></div>
-        </div>
-        <div class="min">
-            <div class="mn" id="mn"></div>
-        </div>
-        <div class="sec">
-            <div class="sc" id="sc"></div>
-        </div>
-        <div class="indicators">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-        <div class="nums">
-            <span id="three">3</span>
-            <span id="six">6</span>
-            <span id="nine">9</span>
-            <span id="twelve">12</span>
-        </div>
-        <div class="time"></div>
+<body>
+    <!-- Dashboard ribbons -->
+    <div class="ribbons" aria-hidden="true">
+        <svg class="r3" viewBox="0 0 1600 600" preserveAspectRatio="none">
+            <path class="fill" d="M0 300 C200 140 600 460 800 300 C1000 140 1400 460 1600 300 L1600 600 L0 600 Z" />
+            <path class="line" d="M0 300 C200 140 600 460 800 300 C1000 140 1400 460 1600 300" />
+        </svg>
+        <svg class="r2" viewBox="0 0 1600 600" preserveAspectRatio="none">
+            <path class="fill" d="M0 320 C200 200 600 440 800 320 C1000 200 1400 440 1600 320 L1600 600 L0 600 Z" />
+            <path class="line" d="M0 320 C200 200 600 440 800 320 C1000 200 1400 440 1600 320" />
+        </svg>
+        <svg class="r1" viewBox="0 0 1600 600" preserveAspectRatio="none">
+            <path class="fill" d="M0 280 C200 180 600 400 800 280 C1000 180 1400 400 1600 280 L1600 600 L0 600 Z" />
+            <path class="line" d="M0 280 C200 180 600 400 800 280 C1000 180 1400 400 1600 280" />
+        </svg>
+        <svg width="0" height="0" style="position:absolute">
+            <defs>
+                <linearGradient id="ribbonFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#b6f03c" stop-opacity="0.35" />
+                    <stop offset="1" stop-color="#8bc926" stop-opacity="0" />
+                </linearGradient>
+            </defs>
+        </svg>
     </div>
-    <div class="toggleClass" onclick="toggleClass()"></div>
+
+    <div class="stage">
+        <svg viewBox="-200 -200 400 400" role="img" aria-label="Analogue clock">
+            <defs>
+                <linearGradient id="bezel" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#ffffff" />
+                    <stop offset="0.5" stop-color="#b9c0b9" />
+                    <stop offset="1" stop-color="#eef1ee" />
+                </linearGradient>
+                <linearGradient id="channel" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#1d221d" />
+                    <stop offset="1" stop-color="#3b423b" />
+                </linearGradient>
+                <radialGradient id="face" cx="0.5" cy="0.32" r="0.8">
+                    <stop offset="0" stop-color="#ffffff" />
+                    <stop offset="0.65" stop-color="#e8ece8" />
+                    <stop offset="1" stop-color="#cdd4cd" />
+                </radialGradient>
+                <radialGradient id="orbFill" cx="0.35" cy="0.3" r="0.8">
+                    <stop offset="0" stop-color="#f4ffd0" />
+                    <stop offset="0.45" stop-color="#9bdc2c" />
+                    <stop offset="1" stop-color="#4a8208" />
+                </radialGradient>
+                <radialGradient id="orbHalo">
+                    <stop offset="0" stop-color="#b6f03c" stop-opacity="0.9" />
+                    <stop offset="1" stop-color="#b6f03c" stop-opacity="0" />
+                </radialGradient>
+                <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#fff" stop-opacity="0.75" />
+                    <stop offset="1" stop-color="#fff" stop-opacity="0" />
+                </linearGradient>
+                <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="3.5" result="b" />
+                    <feMerge>
+                        <feMergeNode in="b" />
+                        <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                </filter>
+                <filter id="handShadow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feDropShadow dx="2" dy="4" stdDeviation="2.5" flood-color="#1b241b" flood-opacity="0.35" />
+                </filter>
+                <clipPath id="faceClip">
+                    <circle r="166" />
+                </clipPath>
+            </defs>
+
+            <!-- bezel + dark channel -->
+            <circle r="196" fill="url(#bezel)" />
+            <circle r="190" fill="none" stroke="#9aa29a" stroke-width="1" opacity="0.6" />
+            <circle r="186" fill="url(#channel)" />
+
+            <!-- ring of light -->
+            <g class="ring-spin" id="ring" filter="url(#glow)"></g>
+
+            <!-- face -->
+            <circle r="168" fill="#9aa29a" />
+            <circle r="166" fill="url(#face)" />
+            <circle r="166" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.8" />
+
+            <g id="ticks"></g>
+            <g id="nums" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-weight="600" font-size="21"
+                fill="#5a625a" text-anchor="middle" dominant-baseline="central"></g>
+
+            <text y="-62" text-anchor="middle" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif"
+                font-size="11" font-weight="700" letter-spacing="5" fill="#9aa29a">RAYR.uk</text>
+
+            <!-- hands -->
+            <g id="hour" filter="url(#handShadow)">
+                <rect x="-5.5" y="-92" width="11" height="106" rx="5.5" fill="#3a3f3a" />
+                <rect x="-1.6" y="-84" width="3.2" height="40" rx="1.6" fill="#b6f03c" />
+            </g>
+            <g id="minute" filter="url(#handShadow)">
+                <rect x="-3.8" y="-128" width="7.6" height="144" rx="3.8" fill="#3a3f3a" />
+                <rect x="-1.2" y="-118" width="2.4" height="50" rx="1.2" fill="#e8ece8" opacity="0.85" />
+            </g>
+            <g id="second" filter="url(#handShadow)">
+                <rect x="-1.3" y="-144" width="2.6" height="180" rx="1.3" fill="#7fc21a" />
+                <circle cy="30" r="6" fill="#7fc21a" />
+            </g>
+
+            <!-- centre orb -->
+            <circle class="orb-glow" r="22" fill="url(#orbHalo)" />
+            <circle r="11" fill="url(#orbFill)" stroke="#3f6f06" stroke-width="0.8" />
+            <ellipse cx="-3" cy="-4" rx="5" ry="3" fill="#fff" opacity="0.8" />
+
+            <!-- glass gloss -->
+            <g clip-path="url(#faceClip)">
+                <ellipse cx="0" cy="-95" rx="140" ry="82" fill="url(#gloss)" opacity="0.55" />
+            </g>
+        </svg>
+    </div>
+
+    <div class="readout">
+        <div class="pill">
+            <span class="dot"></span>
+            <span class="time" id="time">00<span class="sep">:</span>00<span class="sep">:</span>00</span>
+        </div>
+        <div class="date" id="date"></div>
+    </div>
+
     <script>
-        function toggleClass() {
-            const body = document.querySelector('body');
-            body.classList.toggle('light');
+        const NS = 'http://www.w3.org/2000/svg';
+        const make = (tag, attrs, parent) => {
+            const el = document.createElementNS(NS, tag);
+            for (const k in attrs) el.setAttribute(k, attrs[k]);
+            parent.appendChild(el);
+            return el;
+        };
+        const polar = (r, deg) => {
+            const a = (deg - 90) * Math.PI / 180;
+            return [r * Math.cos(a), r * Math.sin(a)];
+        };
+
+        // Ring of light: four quadrants
+        const ring = document.getElementById('ring');
+        for (let q = 0; q < 4; q++) {
+            const start = q * 90 + 6, end = q * 90 + 84;
+            const [x1, y1] = polar(177, start);
+            const [x2, y2] = polar(177, end);
+            make('path', {
+                class: 'quad',
+                d: `M${x1} ${y1} A177 177 0 0 1 ${x2} ${y2}`,
+                fill: 'none',
+                stroke: q % 2 ? '#a6e82e' : '#b6f03c',
+                'stroke-width': 7,
+                'stroke-linecap': 'round'
+            }, ring);
         }
 
-        const hr = document.querySelector('#hr');
-        const mn = document.querySelector('#mn');
-        const sc = document.querySelector('#sc');
-        const time = document.querySelector('.time');
+        // Ticks
+        const ticks = document.getElementById('ticks');
+        for (let i = 0; i < 60; i++) {
+            const major = i % 5 === 0;
+            const [x1, y1] = polar(154, i * 6);
+            const [x2, y2] = polar(major ? 140 : 147, i * 6);
+            make('line', {
+                x1, y1, x2, y2,
+                stroke: major ? '#7fc21a' : '#a2aaa2',
+                'stroke-width': major ? 4 : 1.5,
+                'stroke-linecap': 'round'
+            }, ticks);
+        }
 
-        setInterval(() => {
-            let day = new Date();
-            let hour = day.getHours();
-            let min = day.getMinutes();
-            let sec = day.getSeconds();
+        // Numerals
+        const nums = document.getElementById('nums');
+        for (let n = 1; n <= 12; n++) {
+            const [x, y] = polar(120, n * 30);
+            const t = make('text', { x, y }, nums);
+            t.textContent = n;
+        }
 
-            let hrPosition = hour * 30 + min / 2      //hour * 360/12 + ((min * 360/60)/12)
-            let minPosition = min * 6;             //min * 360/60
-            let secPosition = sec * 6;           //sec * 360/60
+        const hourEl = document.getElementById('hour');
+        const minEl = document.getElementById('minute');
+        const secEl = document.getElementById('second');
+        const timeEl = document.getElementById('time');
+        const dateEl = document.getElementById('date');
 
-            hr.style.transform = `rotateZ(${hrPosition}deg)`;
-            mn.style.transform = `rotateZ(${minPosition}deg)`;
-            sc.style.transform = `rotateZ(${secPosition}deg)`;
+        const pad = n => String(n).padStart(2, '0');
+        let lastSec = -1;
 
-            if (sec < 10) {
-                sec = '0' + sec;
+        function frame() {
+            const now = new Date();
+            const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+            const sFrac = s + now.getMilliseconds() / 1000;
+
+            // smooth sweeping hands
+            secEl.setAttribute('transform', `rotate(${sFrac * 6})`);
+            minEl.setAttribute('transform', `rotate(${(m + sFrac / 60) * 6})`);
+            hourEl.setAttribute('transform', `rotate(${((h % 12) + (m + sFrac / 60) / 60) * 30})`);
+
+            if (s !== lastSec) {
+                lastSec = s;
+                timeEl.innerHTML = `${pad(h)}<span class="sep">:</span>${pad(m)}<span class="sep">:</span>${pad(s)}`;
+                dateEl.textContent = now.toLocaleDateString(undefined, {
+                    weekday: 'long', day: 'numeric', month: 'long'
+                });
             }
-            if (min < 10) {
-                min = '0' + min;
-            }
-            if (hour < 10) {
-                hour = '0' + hour;
-            }
-
-            time.textContent = hour + ' : ' + min + ' : ' + sec;
-
-        }, 1000);
+            requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
     </script>
 </body>
 
