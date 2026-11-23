@@ -1,26 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RayR.uk</title>
+
+    <!-- Primary SEO -->
+    <title>RayR.uk | Ray R UK – Official Website</title>
+    <meta name="description" content="Official website of RayR.uk (Ray R UK). Get in touch by email or follow @rayr.uk on Instagram.">
+    <meta name="keywords" content="rayr uk, rayr.uk, ray r uk, ray r, rayr, rayr instagram, rayr.uk instagram, ray r uk website">
+    <meta name="author" content="RayR.uk">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://rayr.uk/">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Geo / language -->
+    <meta name="geo.country" content="GB">
+    <link rel="alternate" hreflang="en-gb" href="https://rayr.uk/">
+    <link rel="alternate" hreflang="x-default" href="https://rayr.uk/">
+
+    <!-- Open Graph (Facebook, WhatsApp, Discord, iMessage etc.) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="RayR.uk">
+    <meta property="og:title" content="RayR.uk | Ray R UK">
+    <meta property="og:description" content="Official website of RayR.uk (Ray R UK). Email or follow @rayr.uk on Instagram.">
+    <meta property="og:url" content="https://rayr.uk/">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:image" content="https://rayr.uk/og-image.png">
+    <meta property="og:image:alt" content="RayR.uk">
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="RayR.uk | Ray R UK">
+    <meta name="twitter:description" content="Official website of RayR.uk (Ray R UK).">
+    <meta name="twitter:image" content="https://rayr.uk/og-image.png">
+
+    <!-- Icons (add these files to your root) -->
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <!-- Structured data: tells Google that rayr.uk, the Instagram and the name "Ray R" are the same entity -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://rayr.uk/#website",
+          "url": "https://rayr.uk/",
+          "name": "RayR.uk",
+          "alternateName": ["Ray R UK", "RayR UK", "rayr.uk", "Ray R"],
+          "inLanguage": "en-GB",
+          "publisher": { "@id": "https://rayr.uk/#person" }
+        },
+        {
+          "@type": "Person",
+          "@id": "https://rayr.uk/#person",
+          "name": "Ray R",
+          "alternateName": ["RayR", "RayR.uk", "Ray R UK"],
+          "url": "https://rayr.uk/",
+          "email": "mailto:hello@rayr.uk",
+          "sameAs": [
+            "https://www.instagram.com/rayr.uk/"
+          ]
+        }
+      ]
+    }
+    </script>
+
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Small visible text so search engines (and people) see real content */
+        .tagline { margin: 0.5rem 0 1rem; opacity: .8; letter-spacing: .15em; color: #fff; }
+        .about { margin-top: 1.5rem; font-size: .8rem; opacity: .6; max-width: 30em; color: #fff; }
+        .about a { color: inherit; }
+    </style>
 </head>
 <body>
 
     <!-- Neon'd -->
-    <canvas id="c"></canvas>
+    <canvas id="c" aria-hidden="true"></canvas>
 
     <!-- Main -->
-    <div class="content-container">
+    <main class="content-container">
         <h1><a href="/time.html">rayr.uk</a></h1>
+
+        <p class="tagline">Ray R &middot; UK</p>
+
         <a href="mailto:hello@rayr.uk" class="email-link">
-            <button>Email</button>
+            <button type="button">Email</button>
         </a>
-    </div>
+
+        <p class="about">
+            Welcome to RayR.uk, the official site of Ray R UK.
+            Follow <a href="https://www.instagram.com/rayr.uk/" rel="me noopener" target="_blank">@rayr.uk on Instagram</a>
+            or email <a href="mailto:hello@rayr.uk">hello@rayr.uk</a>.
+        </p>
+    </main>
+
+    <noscript>
+        <p>RayR.uk (Ray R UK) – contact <a href="mailto:hello@rayr.uk">hello@rayr.uk</a> or
+        <a href="https://www.instagram.com/rayr.uk/">@rayr.uk on Instagram</a>.</p>
+    </noscript>
 
     <!-- Links the animation JavaScript -->
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
